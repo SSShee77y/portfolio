@@ -10,6 +10,9 @@ class Entity {
 
     display() {
         this.drawTriangle(this.pos, this.vel);
+        // stroke(210);
+        // noFill();
+        // ellipse(this.pos.x, this.pos.y, this.size * 4);
     }
 
     update() {
@@ -18,20 +21,15 @@ class Entity {
     }
 
     wrapAround() {
-        if (this.pos.x > width) this.pos.x = 0;
-        if (this.pos.x < 0) this.pos.x = width;
-        if (this.pos.y > height) this.pos.y = 0;
-        if (this.pos.y < 0) this.pos.y = height;
-    }
-
-    hits(otherEntity) {
-        let d = dist(this.pos.x, this.pos.y, otherEntity.pos.x, otherEntity.pos.y);
-        return d < this.size;
+        if (this.pos.x > width + this.size) this.pos.x = - this.size;
+        if (this.pos.x < 0 - this.size) this.pos.x = width + this.size;
+        if (this.pos.y > height + this.size) this.pos.y = - this.size;
+        if (this.pos.y < 0 - this.size) this.pos.y = height + this.size;
     }
 
     // Draw an isosceles triangle for the entity
     drawTriangle(pos, vel) {
-        const velMag = Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2));
+        const velMag = vecMag(vel);
         const dir = vecMul(vel, this.size/velMag);
         const v1 = vecAdd(pos, dir);
         const v2 = vecAdd({x: pos.x - dir.y * 0.65, y: pos.y + dir.x * 0.65}, vecNeg(vecMul(dir, 0.7)));
@@ -40,13 +38,50 @@ class Entity {
         stroke(this.col);
         noFill();
         triangle(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
-        line(pos.x, pos.y, v1.x, v1.y);
+        // line(pos.x, pos.y, v1.x, v1.y);
+    }
+
+    getClosestEntity(entityList) {
+        let closestEntity = null;
+        let minDistance = Infinity;
+        let closestPosition = null;
+
+        if (entityList.size == 0) {
+            return null;
+        }
+    
+        for (const entity of entityList) {
+            // Get every possible position + wraparounds, so 9 total.
+            const positions = [
+                createVector(entity.pos.x, entity.pos.y), // Original position
+                createVector(entity.pos.x - windowWidth, entity.pos.y), // Left wrap
+                createVector(entity.pos.x + windowWidth, entity.pos.y), // Right wrap
+                createVector(entity.pos.x, entity.pos.y - windowHeight), // Top wrap
+                createVector(entity.pos.x, entity.pos.y + windowHeight), // Bottom wrap
+                createVector(entity.pos.x - windowWidth, entity.pos.y - windowHeight), // Top-left wrap
+                createVector(entity.pos.x + windowWidth, entity.pos.y - windowHeight), // Top-right wrap
+                createVector(entity.pos.x - windowWidth, entity.pos.y + windowHeight), // Bottom-left wrap
+                createVector(entity.pos.x + windowWidth, entity.pos.y + windowHeight) // Bottom-right wrap
+            ];
+        
+            // Check the shortest distance to any wrapped position
+            for (const pos of positions) {
+                const distance = dist(this.pos.x, this.pos.y, pos.x, pos.y);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestEntity = entity;
+                    closestPosition = pos;
+                }
+            }
+        }
+    
+        return {entity: closestEntity, pos: closestPosition};
     }
 }
 
-class Seeker extends Entity {
+class Chaser extends Entity {
     constructor(pos, vel) {
-        super(pos, vel, color("#00e0e0"));
+        super(pos, vel, color("#00efff"));
     }
 }
 
