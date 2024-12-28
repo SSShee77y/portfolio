@@ -102,10 +102,10 @@ nav {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: calc(100vh - 150px);
+    height: max(400px, calc(100vh - 90px - 5vh));
     
     #title {
-        margin-top: 25vh;
+        margin-top: clamp(0px, calc(65vh - 400px), calc(30vh - 100px));
         margin-left: max(-60px, calc(100% + 40px - 100vw));
         padding-right: 40px;
         h1 {

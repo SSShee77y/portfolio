@@ -2,16 +2,23 @@ let evaders = [];
 let obstacles = [];
 let points = 0;
 
-const evaderVelocityFactor = 4.5;
-const evaderVelocityVariance = 0.4;
-const evaderSteeringFactor = 3;
-const evaderDetectionRange = 260;
+let evaderVelocityFactor = 4.5;
+let evaderVelocityVariance = 0.4;
+let evaderSteeringFactor = 3;
+let evaderDetectionRange = 100;
 
 function setup() {
-    createCanvas(windowWidth, windowHeight-60);
+
+    let homeDiv = document.getElementById("home");
+
+    createCanvas(windowWidth, homeDiv.offsetHeight + 90);
+
+    evaderVelocityFactor = width/1000 + 3;
+    evaderDetectionRange = Math.min(500, width * height / 10000 + 100);
         
     // Create some Evaders with random positions and velocity
-    for (let i = 0; i < windowWidth/6; i++) {
+    let spawnLimit = Math.min(400, width * height / 6000 + 60);
+    for (let i = 0; i < spawnLimit; i++) {
         let randomPos = {x: random(width), y: random(height)};
         let randomVel = vecMul(randomUnitVector(),
                             random(evaderVelocityFactor - evaderVelocityVariance,
@@ -42,14 +49,14 @@ function draw() {
     }
 
     // Darkness
-    fill(0, 0, 0, 70);
-    rect(0, 0, windowWidth, windowHeight);
+    strokeWeight(0);
+    fill(10, 10, 10, 80);
+    rect(0, 0, width, height);
     
     // Light at pointer
-    let radius = evaderDetectionRange + 50;
-    strokeWeight(0);
-    for (let r = radius; r > 0; r -= 20) {
-        fill(200, 200, 200, 2);
+    let radius = evaderDetectionRange + 100;
+    for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
+        fill(150, 150, 150, 3);
         ellipse(mouseX, mouseY, r, r);
     }
 
