@@ -5,18 +5,23 @@ class Entity {
         this.pos = pos;
         this.vel = vel;
         this.col = col;
-        this.size = 16;
+        this.size = 20;
     }
 
     display() {
         this.drawTriangle(this.pos, this.vel);
     }
 
+    update() {
+        this.pos = vecAdd(this.pos, this.vel);
+        this.wrapAround();
+    }
+
     wrapAround() {
-        if (this.x > width) this.x = 0;
-        if (this.x < 0) this.x = width;
-        if (this.y > height) this.y = 0;
-        if (this.y < 0) this.y = height;
+        if (this.pos.x > width) this.pos.x = 0;
+        if (this.pos.x < 0) this.pos.x = width;
+        if (this.pos.y > height) this.pos.y = 0;
+        if (this.pos.y < 0) this.pos.y = height;
     }
 
     hits(otherEntity) {
@@ -49,18 +54,4 @@ class Evader extends Entity {
     constructor(pos, vel) {
         super(pos, vel, color(255));
     }
-}
-
-// Vector Math
-
-function vecAdd(vecA, vecB) {
-    return {x: vecA.x + vecB.x, y: vecA.y + vecB.y};
-}
-
-function vecNeg(vec) {
-    return {x: -vec.x, y: -vec.y};
-}
-
-function vecMul(vec, scalar) {
-    return {x: vec.x * scalar, y: vec.y * scalar};
 }
