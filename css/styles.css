@@ -1,0 +1,126 @@
+:root {
+    /* Grey-scale Colors */
+    --color-dark: #0D0A08;
+    --color-light: #F8FBFF;
+
+    --font-header: 'JetBrains Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+}
+
+html, body {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease 0s;
+}
+
+h1, h2, h3, h4, h5, h6, a, button, input, ul, ol, li {
+    color: var(--color-light);
+    font-family: var(--font-header);
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 150%;
+    font-style: normal;
+}
+
+p, input, ul, ol, li {
+    color: var(--color-light);
+    font-family: var(--font-body);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 150%;
+    font-style: normal;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 9px 25px 11px 25px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 150%;
+    transition: all 0.3s ease 0s;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
+    transition: all 0.3s ease 0s;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 40px);
+    padding-inline: 20px;
+    height: 90px;
+    justify-content: space-between;
+    align-items: center;
+
+    #name {
+        font-weight: 500;
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+    #links {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        a {
+            font-weight: 300;
+            padding: 3px 14px;
+            text-decoration: none;
+            transition: all 0.3s ease 0s;
+        }
+        a:hover {
+            font-weight: 500;
+            transform: translateY(-4px);
+        }
+        a.active {
+            font-weight: 500;
+            border-bottom: 1px solid var(--color-light);
+            /* transform: translateY(0px); */
+        }
+    }
+}
+
+#home {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 150px);
+    
+    #title {
+        margin-top: 25vh;
+        margin-left: max(-60px, calc(100% + 40px - 100vw));
+        padding-right: 40px;
+        h1 {
+            font-size: 40px;
+        }
+        p {
+            max-width: 680px;
+        }
+    }
+}
+
+main, canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: var(--color-dark);
+}
