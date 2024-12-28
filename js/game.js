@@ -1,41 +1,23 @@
-let chasers = [];
 let evaders = [];
 let obstacles = [];
 let points = 0;
 
-const chaserVelocityFactor = 3;
-const chaserVelocityVariance = 1;
-const chaserSteeringFactor = 4;
-const chaserDetectionRange = 250;
-
-const evaderVelocityFactor = 6.5;
-const evaderVelocityVariance = 0.2;
-const evaderSteeringFactor = 5;
-const evaderDetectionRange = 500;
+const evaderVelocityFactor = 4.5;
+const evaderVelocityVariance = 0.4;
+const evaderSteeringFactor = 3;
+const evaderDetectionRange = 260;
 
 function setup() {
     createCanvas(windowWidth, windowHeight-60);
-    
-    // Create some Chasers with random positions
-    for (let i = 0; i < 50; i++) {
-        let randomPos = {x: random(width), y: random(height)};
-        let randomVel = vecMul(randomUnitVector(), 
-                            random(chaserVelocityFactor - chaserVelocityVariance,
-                            chaserVelocityFactor + chaserVelocityVariance));
-        chasers.push(new Chaser(randomPos, randomVel));
-    }
-    
+        
     // Create some Evaders with random positions and velocity
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < windowWidth/6; i++) {
         let randomPos = {x: random(width), y: random(height)};
         let randomVel = vecMul(randomUnitVector(),
                             random(evaderVelocityFactor - evaderVelocityVariance,
                             evaderVelocityFactor + evaderVelocityVariance));
         evaders.push(new Evader(randomPos, randomVel));
     }
-    
-    // Create some Obstacles
-    // obstacles.push(new Obstacle(300, 300, 50));
     
     // Display font
     textFont('JetBrains Mono', 20);
@@ -44,17 +26,12 @@ function setup() {
 function draw() {
     background("#0D0A08");
     frameRate(60);
-    strokeWeight(1);
 
     steering();
-    
-    // Display chaser
-    for (let chaser of chasers) {
-        chaser.update();
-        chaser.display();
-    }
 
-    // Display fog of war, evaders, and obstacles
+    strokeWeight(1);
+
+    // Display evaders and obstacles
     // fow();
     for (let evader of evaders) {
         evader.update();
@@ -64,65 +41,45 @@ function draw() {
         obs.display();
     }
 
-
+    // Darkness
+    fill(0, 0, 0, 70);
+    rect(0, 0, windowWidth, windowHeight);
     
-}
+    // Light at pointer
+    let radius = evaderDetectionRange + 50;
+    strokeWeight(0);
+    for (let r = radius; r > 0; r -= 20) {
+        fill(200, 200, 200, 2);
+        ellipse(mouseX, mouseY, r, r);
+    }
 
-
-function fow() {
-    
 }
 
 function steering() {
     // Evader steering and collision
+    let mousePos = {x: mouseX, y: mouseY};
     for (let i = evaders.length - 1; i >= 0; i--) {
-        // Calculate direction of nearest chaser
+        // Calculate direction of nearest mousePos
         let evader = evaders[i];
-        let result = evader.getClosestEntity(chasers);
+        let result = evader.getMousePos(mousePos);
         let dirVec = vecAdd(evader.pos, vecNeg(result.pos));
-        let distance = vecMag(dirVec);
 
-        // Check if collided with chaser, if so -> dead
-        if (distance < result.entity.size / 2) {
-            evaders.splice(i, 1);
-
-            let randomPos = {x: random(width), y: -50};
-            let randomVel = vecMul(randomUnitVector(),
-                                random(evaderVelocityFactor - evaderVelocityVariance,
-                                evaderVelocityFactor + evaderVelocityVariance));
-            evaders.push(new Evader(randomPos, randomVel));
-            continue;
-        } else if (distance > evaderDetectionRange) {
+        if (result.distance > evaderDetectionRange) {
+            // Random steering
             evader.vel = rotateVector(evader.vel, random(-evaderSteeringFactor, evaderSteeringFactor));
-            continue
-        }
-        
-        // Calculate degree difference -> steering direction
-        let diff = degreeDifference(evader.vel, dirVec);
-        let steering = Math.max(Math.min(diff, evaderSteeringFactor), -evaderSteeringFactor);
-
-        evader.vel = rotateVector(evader.vel, steering);
-    }
-
-    // Chaser steering and collision
-    for (let i = 0; i < chasers.length; i++) {
-        // Calculate direction of nearest evader
-        let chaser = chasers[i];
-        let evaderPos = chaser.getClosestEntity(evaders).pos;
-        let dirVec = vecAdd(evaderPos, vecNeg(chaser.pos));
-        let distance = vecMag(dirVec);
-        if (distance > chaserDetectionRange) {
-
-            chaser.vel = rotateVector(chaser.vel, random(-chaserSteeringFactor, chaserSteeringFactor));
+            evader.panic = false;
         } else {
-
             // Calculate degree difference -> steering direction
-            let diff = degreeDifference(chaser.vel, dirVec);
-            let steering = Math.max(Math.min(diff, chaserSteeringFactor), -chaserSteeringFactor);
-
-            chaser.vel = rotateVector(chaser.vel, steering);
+            let diff = degreeDifference(evader.vel, dirVec);
+            let steering = Math.max(Math.min(diff, evaderSteeringFactor), -evaderSteeringFactor);
+    
+            // Steer away from mouse
+            evader.vel = rotateVector(evader.vel, steering);
+            evader.panic = true;
+            evader.panicFac = (evaderDetectionRange - result.distance)/evaderDetectionRange;
         }
     }
+
 }
 
 //

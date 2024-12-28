@@ -6,18 +6,19 @@ class Entity {
         this.vel = vel;
         this.col = col;
         this.size = 20;
-        this.range = chaserDetectionRange;
+        this.panic = false;
+        this.panicFac = 0;
     }
 
     display() {
         this.drawTriangle(this.pos, this.vel);
         // stroke(110);
         // noFill();
-        // ellipse(this.pos.x, this.pos.y, this.range);
+        // ellipse(this.pos.x, this.pos.y, evaderDetectionRange);
     }
 
     update() {
-        this.pos = vecAdd(this.pos, this.vel);
+        this.pos = vecAdd(this.pos, vecMul(this.vel, (this.panic ? 1 + this.panicFac * 0.8 : 1)));
         this.wrapAround();
     }
 
@@ -42,41 +43,37 @@ class Entity {
         // line(pos.x, pos.y, v1.x, v1.y);
     }
 
-    getClosestEntity(entityList) {
-        let closestEntity = null;
+    getMousePos(pos) {
         let minDistance = Infinity;
         let closestPosition = null;
 
-        if (entityList.size == 0) {
+        if (pos == 0) {
             return null;
         }
     
-        for (const entity of entityList) {
-            // Get every possible position + wraparounds, so 9 total.
-            const positions = [
-                createVector(entity.pos.x, entity.pos.y), // Original position
-                createVector(entity.pos.x - windowWidth, entity.pos.y), // Left wrap
-                createVector(entity.pos.x + windowWidth, entity.pos.y), // Right wrap
-                createVector(entity.pos.x, entity.pos.y - windowHeight), // Top wrap
-                createVector(entity.pos.x, entity.pos.y + windowHeight), // Bottom wrap
-                createVector(entity.pos.x - windowWidth, entity.pos.y - windowHeight), // Top-left wrap
-                createVector(entity.pos.x + windowWidth, entity.pos.y - windowHeight), // Top-right wrap
-                createVector(entity.pos.x - windowWidth, entity.pos.y + windowHeight), // Bottom-left wrap
-                createVector(entity.pos.x + windowWidth, entity.pos.y + windowHeight) // Bottom-right wrap
-            ];
-        
-            // Check the shortest distance to any wrapped position
-            for (const pos of positions) {
-                const distance = dist(this.pos.x, this.pos.y, pos.x, pos.y);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestEntity = entity;
-                    closestPosition = pos;
-                }
+        // Get every possible position + wraparounds, so 9 total.
+        const positions = [
+            createVector(pos.x, pos.y), // Original position
+            createVector(pos.x - windowWidth, pos.y), // Left wrap
+            createVector(pos.x + windowWidth, pos.y), // Right wrap
+            createVector(pos.x, pos.y - windowHeight), // Top wrap
+            createVector(pos.x, pos.y + windowHeight), // Bottom wrap
+            createVector(pos.x - windowWidth, pos.y - windowHeight), // Top-left wrap
+            createVector(pos.x + windowWidth, pos.y - windowHeight), // Top-right wrap
+            createVector(pos.x - windowWidth, pos.y + windowHeight), // Bottom-left wrap
+            createVector(pos.x + windowWidth, pos.y + windowHeight) // Bottom-right wrap
+        ];
+    
+        // Check the shortest distance to any wrapped position
+        for (const pos of positions) {
+            const distance = dist(this.pos.x, this.pos.y, pos.x, pos.y);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestPosition = pos;
             }
         }
     
-        return {entity: closestEntity, pos: closestPosition};
+        return {pos: closestPosition, distance: minDistance};
     }
 }
 
