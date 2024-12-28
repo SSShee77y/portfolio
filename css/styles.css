@@ -16,7 +16,8 @@ body {
     color: var(--color-light);
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     transition: all 0.3s ease 0s;
 }
 
@@ -48,6 +49,14 @@ button {
     font-size: 20px;
     line-height: 150%;
     transition: all 0.3s ease 0s;
+}
+
+main, canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: var(--color-dark);
 }
 
 .content {
@@ -102,7 +111,7 @@ nav {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: max(400px, calc(100vh - 90px - 5vh));
+    height: max(300px, calc(100vh - 90px - 5vh));
     
     #title {
         margin-top: clamp(0px, calc(65vh - 400px), calc(30vh - 100px));
@@ -117,10 +126,8 @@ nav {
     }
 }
 
-main, canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background-color: var(--color-dark);
+#projects {
+    background-color: var(--color-light);
+    height: 50vh;
+    width: 100vw;
 }
