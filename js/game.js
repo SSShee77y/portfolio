@@ -5,11 +5,13 @@ let points = 0;
 
 const chaserVelocityFactor = 3;
 const chaserVelocityVariance = 1;
-const chaserSteeringFactor = 3;
+const chaserSteeringFactor = 4;
+const chaserDetectionRange = 250;
 
-const evaderVelocityFactor = 6.1;
-const evaderVelocityVariance = 0;
+const evaderVelocityFactor = 6.5;
+const evaderVelocityVariance = 0.2;
 const evaderSteeringFactor = 5;
+const evaderDetectionRange = 500;
 
 function setup() {
     createCanvas(windowWidth, windowHeight-60);
@@ -90,7 +92,7 @@ function steering() {
                                 evaderVelocityFactor + evaderVelocityVariance));
             evaders.push(new Evader(randomPos, randomVel));
             continue;
-        } else if (distance > 200) {
+        } else if (distance > evaderDetectionRange) {
             evader.vel = rotateVector(evader.vel, random(-evaderSteeringFactor, evaderSteeringFactor));
             continue
         }
@@ -109,7 +111,7 @@ function steering() {
         let evaderPos = chaser.getClosestEntity(evaders).pos;
         let dirVec = vecAdd(evaderPos, vecNeg(chaser.pos));
         let distance = vecMag(dirVec);
-        if (distance > 200) {
+        if (distance > chaserDetectionRange) {
 
             chaser.vel = rotateVector(chaser.vel, random(-chaserSteeringFactor, chaserSteeringFactor));
         } else {

@@ -6,13 +6,14 @@ class Entity {
         this.vel = vel;
         this.col = col;
         this.size = 20;
+        this.range = chaserDetectionRange;
     }
 
     display() {
         this.drawTriangle(this.pos, this.vel);
-        // stroke(210);
+        // stroke(110);
         // noFill();
-        // ellipse(this.pos.x, this.pos.y, this.size * 4);
+        // ellipse(this.pos.x, this.pos.y, this.range);
     }
 
     update() {
