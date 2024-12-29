@@ -14,7 +14,7 @@ function setup() {
     createCanvas(windowWidth, homeDiv.offsetHeight + 90);
 
     evaderVelocityFactor = width/1000 + 3;
-    evaderDetectionRange = Math.min(500, width * height / 10000 + 100);
+    evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
         
     // Create some Evaders with random positions and velocity
     let spawnLimit = Math.min(400, width * height / 6000 + 60);
@@ -54,7 +54,7 @@ function draw() {
     rect(0, 0, width, height);
     
     // Light at pointer
-    let radius = evaderDetectionRange + 100;
+    let radius = evaderDetectionRange + 120;
     for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
         fill(150, 150, 150, 3);
         ellipse(mouseX, mouseY, r, r);

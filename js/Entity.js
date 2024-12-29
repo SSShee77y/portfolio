@@ -18,7 +18,7 @@ class Entity {
     }
 
     update() {
-        this.pos = vecAdd(this.pos, vecMul(this.vel, (this.panic ? 1 + this.panicFac * 0.8 : 1)));
+        this.pos = vecAdd(this.pos, vecMul(this.vel, (this.panic ? 1 + this.panicFac : 1)));
         this.wrapAround();
     }
 
