@@ -1,5 +1,4 @@
 let evaders = [];
-let obstacles = [];
 let points = 0;
 
 let evaderVelocityFactor = 4.5;
@@ -8,7 +7,6 @@ let evaderSteeringFactor = 3;
 let evaderDetectionRange = 100;
 
 function setup() {
-
     let homeDiv = document.getElementById("home");
 
     createCanvas(windowWidth, homeDiv.offsetHeight + 90);
@@ -19,10 +17,8 @@ function setup() {
     // Create some Evaders with random positions and velocity
     let spawnLimit = Math.min(400, width * height / 6000 + 60);
     for (let i = 0; i < spawnLimit; i++) {
-        let randomPos = {x: random(width), y: random(height)};
-        let randomVel = vecMul(randomUnitVector(),
-                            random(evaderVelocityFactor - evaderVelocityVariance,
-                            evaderVelocityFactor + evaderVelocityVariance));
+        let randomPos = createVector(random(width), random(height));
+        let randomVel = p5.Vector.random2D().setMag(evaderVelocityFactor);
         evaders.push(new Evader(randomPos, randomVel));
     }
     
@@ -34,27 +30,23 @@ function draw() {
     background("#0D0A08");
     frameRate(60);
 
-    steering();
+    mouseSteering();
 
     strokeWeight(1);
 
-    // Display evaders and obstacles
-    // fow();
+    // Display evaders
     for (let evader of evaders) {
         evader.update();
         evader.display();
     }
-    for (let obs of obstacles) {
-        obs.display();
-    }
 
     // Darkness
     strokeWeight(0);
-    fill(13, 10, 8, 90);
-    rect(0, 0, width, height);
+    // fill(13, 10, 8, 90);
+    // rect(0, 0, width, height);
     
     // Light at pointer
-    let radius = evaderDetectionRange + 120;
+    let radius = evaderDetectionRange + 100;
     for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
         fill(150, 150, 150, 3);
         ellipse(mouseX, mouseY, r, r);
@@ -62,18 +54,20 @@ function draw() {
 
 }
 
-function steering() {
+function mouseSteering() {
     // Evader steering and collision
-    let mousePos = {x: mouseX, y: mouseY};
+    let mousePos = createVector(mouseX, mouseY);
     for (let i = evaders.length - 1; i >= 0; i--) {
         // Calculate direction of nearest mousePos
         let evader = evaders[i];
         let result = evader.getMousePos(mousePos);
-        let dirVec = vecAdd(evader.pos, vecNeg(result.pos));
+        let dirVec = p5.Vector.sub(evader.pos, result.pos).normalize();
+        
+        angleMode(DEGREES);
 
         if (result.distance > evaderDetectionRange) {
             // Random steering
-            evader.vel = rotateVector(evader.vel, random(-evaderSteeringFactor, evaderSteeringFactor));
+            evader.vel.rotate(radians(random(-evaderSteeringFactor, evaderSteeringFactor)));
             evader.panic = false;
         } else {
             // Calculate degree difference -> steering direction
@@ -81,67 +75,52 @@ function steering() {
             let steering = Math.max(Math.min(diff, evaderSteeringFactor), -evaderSteeringFactor);
     
             // Steer away from mouse
-            evader.vel = rotateVector(evader.vel, steering);
             evader.panic = true;
             evader.panicFac = (evaderDetectionRange - result.distance)/evaderDetectionRange;
+            evader.vel.rotate(radians(evader.panicFac * steering * 6));
         }
     }
-
-}
-
-//
-// Vector Functions
-//
-
-// Vector Math
-
-function vecAdd(vecA, vecB) {
-    return {x: vecA.x + vecB.x, y: vecA.y + vecB.y};
-}
-
-function vecNeg(vec) {
-    return {x: -vec.x, y: -vec.y};
-}
-
-function vecMul(vec, scalar) {
-    return {x: vec.x * scalar, y: vec.y * scalar};
-}
-
-function vecMag(vec) {
-    return Math.sqrt(vec.x * vec.x + vec.y * vec.y);
 }
 
 // Degree Difference between two vectors
 // Positive for clockwise, negative for counterclockwise
 function degreeDifference(vecA, vecB) {
-    // Calculate dot product and cross product
-    const dot = vecA.x * vecB.x + vecA.y * vecB.y;
-    const cross = vecA.x * vecB.y - vecA.y * vecB.x;
+    angleMode(DEGREES);
   
-    // Find angle in radians, then convert to degrees
-    const angleInRadians = Math.atan2(cross, dot);
-    const angleInDegrees = angleInRadians * (180 / Math.PI);
-  
-    return angleInDegrees;
+    return vecA.angleBetween(vecB);
 }
 
-// Rotate a vector by the given degrees
-function rotateVector(vec, degrees) {
-    const radians = degrees * (Math.PI / 180);
-    const cosTheta = Math.cos(radians);
-    const sinTheta = Math.sin(radians);
-    
-    return {
-      x: vec.x * cosTheta - vec.y * sinTheta,
-      y: vec.x * sinTheta + vec.y * cosTheta
-    };
-}
+// Gets wrapped positions
+function getWrappedPositions(pos, borderDetection) {
+    let positions = [];
 
-// Generates a random unit vector
-function randomUnitVector() {
-    const angle = Math.random() * 2 * Math.PI;
-    return {
-      x: Math.cos(angle),
-      y: Math.sin(angle)
-    };
+    // Get wrapped on x
+    if (pos.x > windowWidth - borderDetection) {
+        positions.push(createVector(pos.x - windowWidth, pos.y));
+        
+        // Get wrapped of wrapped-x on y
+        if (positions[0].y > windowHeight - borderDetection) {
+            positions.push(createVector(positions[0].x, positions[0].y - windowHeight));
+        } else if (positions[0].y < borderDetection) {
+            positions.push(createVector(positions[0].x, positions[0].y + windowHeight));
+        }
+    } else if (pos.x < borderDetection) {
+        positions.push(createVector(pos.x - windowWidth, pos.y));
+        
+        // Get wrapped of wrapped-x on y
+        if (positions[0].y > windowHeight - borderDetection) {
+            positions.push(createVector(positions[0].x, positions[0].y - windowHeight));
+        } else if (positions[0].y < borderDetection) {
+            positions.push(createVector(positions[0].x, positions[0].y + windowHeight));
+        }
+    }
+
+    // Get wrapped on y
+    if (pos.y > windowHeight - borderDetection) {
+        positions.push(createVector(pos.x, pos.y - windowHeight));
+    } else if (pos.y < borderDetection) {
+        positions.push(createVector(pos.x, pos.y + windowHeight));
+    }
+
+    return positions;
 }

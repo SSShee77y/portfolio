@@ -18,7 +18,7 @@ class Entity {
     }
 
     update() {
-        this.pos = vecAdd(this.pos, vecMul(this.vel, (this.panic ? 1 + this.panicFac : 1)));
+        this.pos.add(p5.Vector.mult(this.vel, (this.panic ? 1 + this.panicFac : 1)));
         this.wrapAround();
     }
 
@@ -31,15 +31,20 @@ class Entity {
 
     // Draw an isosceles triangle for the entity
     drawTriangle(pos, vel) {
-        const velMag = vecMag(vel);
-        const dir = vecMul(vel, this.size/velMag);
-        const v1 = vecAdd(pos, dir);
-        const v2 = vecAdd({x: pos.x - dir.y * 0.65, y: pos.y + dir.x * 0.65}, vecNeg(vecMul(dir, 0.7)));
-        const v3 = vecAdd({x: pos.x + dir.y * 0.65, y: pos.y - dir.x * 0.65}, vecNeg(vecMul(dir, 0.7)));
+        const dir = p5.Vector.normalize(vel).setMag(this.size);
+        const pos1 = p5.Vector.add(dir, pos);
+        const pos2 = p5.Vector.add(p5.Vector.rotate(dir, -PI*0.78), pos);
+        const pos3 = p5.Vector.add(p5.Vector.rotate(dir, PI*0.78), pos);
 
         stroke(this.col);
+
+        // let angleDegrees = Math.atan2(dir.x, dir.y) * (180 / Math.PI);
+        // colorMode(HSB);
+        // stroke(Math.abs(angleDegrees) / 1.5, 60, 65);
+        colorMode(RGB);
+
         noFill();
-        triangle(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
+        triangle(pos1.x, pos1.y, pos2.x, pos2.y, pos3.x, pos3.y)
         // line(pos.x, pos.y, v1.x, v1.y);
     }
 
@@ -51,19 +56,10 @@ class Entity {
             return null;
         }
     
-        // Get every possible position + wraparounds, so 9 total.
-        const positions = [
-            createVector(pos.x, pos.y), // Original position
-            createVector(pos.x - windowWidth, pos.y), // Left wrap
-            createVector(pos.x + windowWidth, pos.y), // Right wrap
-            createVector(pos.x, pos.y - windowHeight), // Top wrap
-            createVector(pos.x, pos.y + windowHeight), // Bottom wrap
-            createVector(pos.x - windowWidth, pos.y - windowHeight), // Top-left wrap
-            createVector(pos.x + windowWidth, pos.y - windowHeight), // Top-right wrap
-            createVector(pos.x - windowWidth, pos.y + windowHeight), // Bottom-left wrap
-            createVector(pos.x + windowWidth, pos.y + windowHeight) // Bottom-right wrap
-        ];
-    
+        // Get every possible position + wraparounds
+        const positions = getWrappedPositions(pos, evaderDetectionRange/2);
+        positions.push(createVector(pos.x, pos.y));
+        
         // Check the shortest distance to any wrapped position
         for (const pos of positions) {
             const distance = dist(this.pos.x, this.pos.y, pos.x, pos.y);
@@ -85,6 +81,6 @@ class Chaser extends Entity {
 
 class Evader extends Entity {
     constructor(pos, vel) {
-        super(pos, vel, color(230));
+        super(pos, vel, color(160));
     }
 }
