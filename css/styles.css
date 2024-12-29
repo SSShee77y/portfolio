@@ -13,7 +13,7 @@ html, body {
 
 body {
     background-color: var(--color-dark);
-    color: var(--color-light);
+    color: var(--color-dark);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -21,7 +21,7 @@ body {
     transition: all 0.3s ease 0s;
 }
 
-h1, h2, h3, h4, h5, h6, a, button, input, ul, ol, li {
+h1, h2, h3, h4, h5, h6, a, input, ul, ol, li {
     color: var(--color-light);
     font-family: var(--font-header);
     font-optical-sizing: auto;
@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6, a, button, input, ul, ol, li {
     font-style: normal;
 }
 
-p, input, ul, ol, li {
+div, p, input, ul, ol, li {
     color: var(--color-light);
     font-family: var(--font-body);
     font-optical-sizing: auto;
@@ -42,13 +42,33 @@ p, input, ul, ol, li {
 }
 
 button {
-    border: none;
-    border-radius: 10px;
-    padding: 9px 25px 11px 25px;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    text-align: center;
+    border: 3px solid var(--color-dark);
+    border-radius: 34px;
+    padding: 11px 25px;
     cursor: pointer;
-    font-size: 20px;
+    pointer-events: all;
+
+    font-family: var(--font-header);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 16px;
     line-height: 150%;
-    transition: all 0.3s ease 0s;
+    font-style: normal;
+
+    transition: all 0.2s ease 0s;
+}
+
+button:hover, button:active {
+    background-color: var(--color-light);
+    color: var(--color-dark);
+    font-weight: 500;
+    transform: scale(1.04);
+    span {
+        opacity: 1;
+    }
 }
 
 main, canvas {
@@ -79,13 +99,13 @@ nav {
     justify-content: space-between;
     align-items: center;
 
-    #name {
+    #nav-name {
         font-weight: 500;
         font-size: 24px;
         text-decoration: none;
     }
 
-    #links {
+    #nav-links {
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -93,7 +113,7 @@ nav {
             font-weight: 300;
             padding: 3px 14px;
             text-decoration: none;
-            transition: all 0.3s ease 0s;
+            transition: all 0.2s ease 0s;
         }
         a:hover {
             font-weight: 500;
@@ -111,9 +131,9 @@ nav {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: max(300px, calc(100vh - 90px - 5vh));
+    height: max(300px, calc(100vh - 100px - 2vh));
     
-    #title {
+    #home-title {
         margin-top: clamp(0px, calc(65vh - 400px), calc(30vh - 100px));
         margin-left: max(-60px, calc(100% + 40px - 100vw));
         padding-right: 40px;
@@ -127,7 +147,108 @@ nav {
 }
 
 #projects {
+    display: flex;
+    flex-direction: column;
     background-color: var(--color-light);
-    height: 50vh;
+    color: var(--color-dark);
+    width: 100%;
+    padding: 30px calc((100vw - 100%) / 2);
+
+    border-top: 4px solid #A8ABAF;
+}
+
+.project {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 80px;
+    padding: 30px 100px;
+
+    h1, h2, p {
+        color: var(--color-dark);
+        padding: 0;
+        margin: 5px 0px;
+    }
+    a {
+        color: var(--color-dark);
+        font-weight: 400;
+        text-decoration: none;
+        transition: all 0.2s ease 0s;
+    }
+    a:hover {
+        transform: translateY(-5px);
+    }
+    image {
+        border-radius: 20px;
+    }
+
+    .project-info {
+        max-width: 450px;
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+        }
+        h2 {
+            font-weight: 400;
+        }
+        .info-separator {
+            background-color: #0D0A08;
+            height: 1px;
+            width: 100px;
+            margin-block: 28px 25px;
+        }
+        p {
+            margin-bottom: 26px;
+            max-width: 420px;
+        }
+    }
+
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-light);
+    color: var(--color-dark);
     width: 100vw;
+    padding-block: 20px 40px;
+    align-items: center;
+    justify-content: center;
+
+    h1, a, p {
+        color: var(--color-dark);
+        font-weight: 400;
+    }
+    h1 {
+        font-size: 40px;
+        margin-block: 10px;
+    }
+    .footer-links {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 30px;
+        gap: 15px;
+        a {
+            font-weight: 300;
+            text-decoration: none;
+            padding: 2px 0px;
+            border-bottom: 2px solid var(--color-dark);
+            transition: all 0.2s ease 0s;
+        }
+        a:hover {
+            transform: translateY(-4px);
+        }
+        .links-separator {
+            color: var(--color-dark);
+            /* padding-inline: 10px; */
+            font-family: var(--font-header);
+            font-weight: 700;
+            padding-right: 2px;
+        }
+    }
+    #copyright {
+        /* color: #88807C; */
+        font-weight: 200;
+        font-size: 16px;
+    }
 }

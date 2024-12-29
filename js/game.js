@@ -50,7 +50,7 @@ function draw() {
 
     // Darkness
     strokeWeight(0);
-    fill(10, 10, 10, 80);
+    fill(13, 10, 8, 90);
     rect(0, 0, width, height);
     
     // Light at pointer

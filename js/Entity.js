@@ -85,6 +85,6 @@ class Chaser extends Entity {
 
 class Evader extends Entity {
     constructor(pos, vel) {
-        super(pos, vel, color(255));
+        super(pos, vel, color(230));
     }
 }
