@@ -106,7 +106,7 @@ function getWrappedPositions(pos, borderDetection) {
             positions.push(createVector(positions[0].x, positions[0].y + windowHeight));
         }
     } else if (pos.x < borderDetection) {
-        positions.push(createVector(pos.x - windowWidth, pos.y));
+        positions.push(createVector(pos.x + windowWidth, pos.y));
         
         // Get wrapped of wrapped-x on y
         if (positions[0].y > windowHeight - borderDetection) {
