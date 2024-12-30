@@ -8,8 +8,9 @@ let evaderDetectionRange = 100;
 
 function setup() {
     let homeDiv = document.getElementById("home");
+    let navDiv = document.getElementById("nav");
 
-    createCanvas(windowWidth, homeDiv.offsetHeight + 90);
+    createCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
 
     evaderVelocityFactor = width/1000 + 3;
     evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
@@ -27,7 +28,7 @@ function setup() {
 }
 
 function draw() {
-    background("#0D0A08");
+    background("#141213");
     frameRate(60);
 
     mouseSteering();
