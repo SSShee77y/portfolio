@@ -27,6 +27,16 @@ function setup() {
     textFont('JetBrains Mono', 20);
 }
 
+function windowResized() {
+    let homeDiv = document.getElementById("home");
+    let navDiv = document.getElementById("nav");
+
+    resizeCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
+    
+    evaderVelocityFactor = width/1000 + 3;
+    evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
+}
+
 function draw() {
     background("#141213");
     frameRate(60);

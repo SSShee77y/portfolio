@@ -105,8 +105,8 @@ main, canvas {
 nav {
     display: flex;
     flex-direction: row;
-    width: calc(100% - 60px);
-    padding-inline: calc((100vw - 100%) / 2 + 30px);
+    width: calc(100vw - 80px);
+    padding-inline: 40px;
     height: 100px;
     justify-content: space-between;
     align-items: center;
@@ -153,9 +153,12 @@ footer {
     align-items: center;
     justify-content: center;
 
-    h1, a, p {
+    h1, p {
         color: var(--color-dark);
+        text-align: center;
+        max-width: 100%;
         font-weight: 400;
+        padding-inline: 20px;
         /* font-size: 18px; */
     }
     h1 {
@@ -166,11 +169,18 @@ footer {
     }
     .footer-links {
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 100%;
+        padding-inline: 30px;
         margin-bottom: 30px;
         gap: 15px;
+        align-content: center;
+        justify-content: center;
+
         a {
+            text-align: center;
             font-family: var(--font-body);
+            color: var(--color-dark);
             font-weight: 400;
             text-decoration: none;
             padding: 3px 0px;
@@ -180,13 +190,6 @@ footer {
         a:hover {
             font-weight: 500;
             transform: translateY(-4px);
-        }
-        .links-separator {
-            color: var(--color-dark);
-            /* padding-inline: 10px; */
-            font-family: var(--font-header);
-            font-weight: 700;
-            padding-right: 2px;
         }
     }
     #copyright {
@@ -208,6 +211,8 @@ footer {
         top: max(90px, 50vh - 180px);
         left: max(70px, 50vw - 760px);
         padding-right: 20px;
+        transition: all 0.3s ease 0s;
+
         h1 {
             font-size: 45px;
         }
@@ -225,9 +230,10 @@ footer {
     flex-direction: column;
     background-color: var(--color-light);
     color: var(--color-dark);
-    width: 100%;
+    width: 100vw;
     padding-block: 40px;
-    padding-inline: calc((100vw - 100%) / 2);
+    padding-inline: 0;
+    align-items: center;
 
     border-top: 4px solid var(--color-gray-border);
 }
@@ -237,8 +243,9 @@ footer {
     grid-template-columns: 5fr 4fr;
     align-items: center;
     gap: 80px;
+    max-width: 1300px;
     padding-block: 40px;
-    padding-inline: 120px 100px;
+    padding-inline: 60px 40px;
 
     h1, h2, p {
         color: var(--color-dark);
@@ -262,6 +269,7 @@ footer {
         height: fit-content;
         img {
             width: 100%;
+            max-width: 700px;
             height: auto;
             object-fit: cover;
             aspect-ratio: 17 / 10;
@@ -270,10 +278,14 @@ footer {
     }
 
     .project-info {
+        display: flex;
+        flex-direction: column;
         max-width: 450px;
         h1 {
             font-size: 40px;
             font-weight: 700;
+            line-height: 120%;
+            margin-block: 10px;
         }
         h2 {
             font-weight: 400;
@@ -299,10 +311,10 @@ footer {
     flex-direction: column;
     background-color: var(--color-light);
     color: var(--color-dark);
-    width: calc(100% - 580px);
-    min-width: 520px;
-    padding-inline: calc((100vw - 100%) / 2 + 290px);
+    width: calc(100vw - 50px);
+    max-width: 1000px;
     padding-block: 40px 0px;
+    padding-inline: 25px;
     align-items: center;
     
     /* border-top: 4px solid var(--color-gray-border); */
@@ -390,6 +402,10 @@ footer {
 /* Specific to About */
 
 .about-content {
+    h3, h4, h5, h6, a, div, p, input, ul, ol, li {
+        width: 800px;
+        max-width: calc(100vw - 50px);
+    }
     img {
         object-fit: cover;
         width: auto;
@@ -397,9 +413,52 @@ footer {
         aspect-ratio: 1 / 1;
         margin-bottom: 30px;
     }
-    h4, p {
-        padding-inline: 50px;
-        max-width: calc(100% - 100px);
+}
+
+/* Project Change Viewport */
+@media only screen and (max-width: 1200px) {
+    
+    /* Navigation */
+
+    .project {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-inline: 30px;
+        text-align: center;
+    
+        .project-info {
+            align-items: center;
+        }
+    
+    }
+    
+}
+
+/* Mobile Viewport */
+@media only screen and (max-width: 800px) {
+    
+    /* Navigation */
+
+    nav {
+        width: calc(100vw - 50px);
+        padding-inline: 20px;
+        height: 80px;
+
+        #nav-links {
+            a {
+                padding-inline: 0px;
+            }
+        }
+    }
+    
+    /* Home Splash */
+    
+    #home {
+        #home-title {
+            top: 80px;
+            left: 20px;
+        }
     }
 }
 
