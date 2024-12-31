@@ -299,9 +299,9 @@ footer {
     flex-direction: column;
     background-color: var(--color-light);
     color: var(--color-dark);
-    width: calc(100% - 600px);
+    width: calc(100% - 580px);
     min-width: 520px;
-    padding-inline: calc((100vw - 100%) / 2 + 300px);
+    padding-inline: calc((100vw - 100%) / 2 + 290px);
     padding-block: 40px 0px;
     align-items: center;
     
@@ -312,6 +312,9 @@ footer {
     h1, h2, h3 {
         color: var(--color-dark);
         font-weight: 400;
+        text-align: center;
+        line-height: 110%;
+        margin-block: 12px;
     }
 
     h3, h4, h5, h6, a, div, p, input, ul, ol, li, img {
@@ -323,7 +326,13 @@ footer {
         margin-block: 10px;
     }
     ul {
+        width: calc(100% - 26px);
+        padding-left: 26px;
         margin-block: 0px;
+    }
+    li {
+        width: calc(100% - 5px);
+        padding-left: 5px;
     }
 
     /* Specific overrides */
@@ -332,31 +341,35 @@ footer {
         font-family: var(--font-body);
         font-weight: 600;
         font-size: 50px;
-        margin: 0px;
+        /* margin: 0px; */
     }
     h2 {
         font-size: 20px;
-        margin: 0px;
+        /* margin: 0px;  */
     }
     h3 {
         text-align: center;
-        margin-bottom: 20px;
+        /* margin: 0px; */
     }
     .summary-info {
         width: fit-content;
         max-width: 100%;
-        margin-block: 20px 30px;
+        margin-block: 10px 20px;
     }
     h4 {
         font-weight: 600;
         font-size: 21px;
-        margin-block: 15px 8px;
+        margin-block: 2px 8px;
     }
     img {
-        object-fit: cover;
-        margin-block: 10px;
+        width: auto;
+        max-width: 100%;
+        text-align: center;
+        margin-block: 15px;
+        max-height: min(500px, 80vh);
     }
     .caption {
+        text-align: center;
         font-weight: 100;
         font-size: 15px;
         margin-block: 0px 10px;
@@ -370,6 +383,7 @@ footer {
     }
     .page-break.last {
         margin-top: 40px;
+        /* height: 0px; */
     }
 }
 
@@ -377,9 +391,9 @@ footer {
 
 .about-content {
     img {
+        object-fit: cover;
         width: auto;
         height: 400px;
-        max-height: 80vh;
         aspect-ratio: 1 / 1;
         margin-bottom: 30px;
     }
