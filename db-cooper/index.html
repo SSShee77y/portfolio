@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <title>The Interactive Mystery of D.B. Cooper — Leo Chen</title>
+</head>
+<body class="black-on-white">
+    <div class="content">
+        <nav id="nav" class="black-on-white">
+            <a id="nav-name" href="../">Leo Chen</a>
+            <div id="nav-links">
+                <a href="../">Work</a>
+                <a href="../about" >About</a>
+                <a href="../resources/resume.pdf" target="_blank">Resume</a>
+            </div>
+        </nav>
+
+        <div class="project-content">
+            <h1>The Interactive Mystery of D.B. Cooper</h1>
+            <h2>Interactive Design • Storytelling</h2>
+
+            <div class="summary-info">
+                <p class="caption"><br>*Note: Some assets were "borrowed" from the FBI.</p>
+            </div>
+
+            <img src="../resources/db_cooper_landing.png" alt="">
+            <p class="caption">D.B. Cooper website landing page with a skydiving criminal and rain effects</p>
+
+            <p>The project aimed to create a visually compelling and interactive way to present the 
+                history of the D.B. Cooper case to an audience unfamiliar with it.</p>
+            
+            <p><b>Deliverables: </b>Figma Prototype, Fully Developed Website</p>
+            <p><b>Role: </b>Sole Designer and Developer</p>
+            <p><b>Tools: </b>Figma, HTML, CSS, JavaScript, Illustrator, Mapbox</p>
+            <p><b>Duration: </b>Spring 2024 — 4 weeks</p>
+            <p><b>Key Features of the Product:</b></p>
+            
+            <ul>
+                <li>Animated timeline that captures the events of the hijacking in detail</li>
+                <li>Interactive suspects and evidence boards with clickable items</b></li>
+                <li>Immersive environment design</li>
+            </ul>
+                
+            <div class="page-break"></div>
+
+
+            <h4>The Problem</h4>
+
+            <p>The initial brief for this project was to develop a biography for a selected individual. However, D.B. Cooper is not a singular, well-defined figure but rather a cultural icon shrouded in mystery. This posed the question: how do you craft a compelling, interactive website about someone whose true identity remains unknown?</p>
+            <p>The key challenges of the project included:</p>
+            <ul>
+                <li><b>A Faceless Icon:</b>
+                    Unlike a traditional biography, there was no central figure or person to focus on. So how do we present the essence of D.B. Cooper?</li>
+                <li><b>Sifting Through Conspiracies:</b>
+                    The D.B. Cooper story is surrounded by countless conspiracy theories, much of which can overshadow the actual facts of the case. The project needed to rely solely on verified information.</li>
+                <li><b>Simplicity:</b>
+                    The website needed to be accessible for anyone, covering the essentials of the case while avoiding overwhelming details and conspiracies suited for more die-hard D.B. Cooper enthusiasts.</li>
+            </ul>
+
+            <div class="page-break"></div>
+
+
+            <h4>Research</h4>
+
+            <p>To build the site, I gathered information from various reputable sources to ensure accuracy and provide a comprehensive yet accessible overview of the D.B. Cooper case:</p>
+            
+            <ul><li><b>Primary Resources:</b>
+                <ul>
+                    <li>The <a href="https://www.fbi.gov/history/famous-cases/db-cooper-hijacking" target="_blank">FBI's official case files</a> on the hijacking, providing details and imagery for most of the evidence page.</li>
+                    <li>The <a href="https://en.wikipedia.org/wiki/D._B._Cooper" target="_blank">D.B. Cooper Wikipedia page</a>, which featured extensive information on the timeline of events, suspects, pop culture, and additional sources.</li>
+                    <li>The <a href="https://website.thedbcooperforum.com/" target="_blank">D.B. Cooper Forum page</a>, which contained exact flight path data of the hijacked aircraft and other important information surrounding the aircraft.</li>
+                </ul></li></ul>
+            <img src="resources/db-cooper-flight-path.jpg" alt="">
+            <p class="caption">FBI's estimated landing zone of the hijacker, along with flight paths. Used for the final implementation for the Mapbox flight path</p>
+            
+            <ul><li><b>Contextual Understanding:</b>
+                <ul>
+                    <li>Articles exploring the cultural and aviation impacts of the hijacking, like <a href="https://theconversation.com/d-b-cooper-the-changing-nature-of-hijackings-and-the-foundation-for-todays-airport-security-185562" target="_blank">The Conversation's piece</a>.</li>
+                    <li>Investigations into historical parallels, like <a href="http://jackripper.co.uk/" target="_blank">Jack the Ripper</a>, provided insight into the fascination with unsolved mysteries.</li>
+                </ul></li></ul>
+            <img src="resources/jack-the-ripper.png" alt="">
+            <p class="caption">A website covering information regarding Jack the Ripper. The final vector art style for the project was inspired from criminal cases like this one</p>
+            
+            <ul><li><b>Multimedia:</b>
+                <ul>
+                    <li>The timeline of events was verified through multiple sources, including <a href="https://www.youtube.com/watch?v=CbUjuwhQPKs" target="_blank"><i>The Search for D.B. Cooper</i></a>, which inspired the visual storytelling for the interactive timeline.</li>
+                    <li>Additional timelines, such as <a href="https://prezi.com/w3lc8dikgbzf/db-cooper-timeline-sheldon-mann/" target="_blank">this one</a> helped cross-check and refine the sequence of events.</li>
+                </ul></li></ul>
+            <img src="resources/db-cooper-the-search-for.png" alt="">
+            <p class="caption">A frame from the video <i>The Search for D.B. Cooper</i>, which inspired the timeline design</p>
+            
+            <p>While the case involves countless suspects, I narrowed the list to six individuals who were frequently mentioned across sources and stood out as the most intriguing.</p>
+
+            <img src="resources/db-cooper-suspects.png" alt="">
+            <p class="caption">Final suspects page of the implemented D.B. Cooper site</p>
+
+            <div class="page-break"></div>
+
+
+            <h4>The Approach</h4>
+
+            <p>The goal of the design was to create an engaging and immersive experience that allowed users to easily explore the history, evidence, and cultural legacy behind the infamous D.B. Cooper case. The process began with creating a prototype in Figma to map out the website's layout, focusing on simplicity and clear navigation for users.</p>
+            <ul><li><b>Early Figma Mockup:</b>
+                Focused on a clean, easy-to-navigate homepage and basic pages for the timeline, evidence, and suspects.</li></ul>  
+            <img src="resources/db-cooper-figma-timeline.png" alt="">
+            <p class="caption">Figma visual of the timeline, with Mapbox's map, labels, flightpath, and landing zone integrated beneath</p>
+
+            <ul><li><b>Feedback and Final Mockup Iteration:</b>
+                Feedback led to refining the homepage for a more cohesive visual identity and clearer layout for the evidence and suspects pages. The vector art style was also adjusted for better visual consistency.</li></ul>
+            <img src="resources/db-cooper-final-figma.png" alt="">
+            <p class="caption">Overview of the final Figma designs of the project</p>
+
+            <ul><li><b>Final Web Implementation:</b>
+                    Refined the homepage with D.B. Cooper falling and a CTA, integrated the timeline with Mapbox, and and added interactive suspects and evidence, allowing users to view them in more detail.</li></ul>
+            <img src="resources/db-cooper-evidence.png" alt="">
+            <p class="caption">Final evidence page of the D.B. Cooper site</p>
+
+            <p>Test out the final implementation of the website here: <a href="https://lehigh-university-design.github.io/project-3-SSShee77y/" target="_blank">D.B. Cooper</a></p>
+
+            <div class="page-break last"></div>
+        </div>
+
+        <footer>
+            <h1>Let's Connect!</h1>
+            <p>Interested in my work? Please send me a message so we can chat!</p>
+
+            <div class="footer-links">
+                <a href="mailto:leochen.creates@gmail.com" >Email</a>
+                <a href="https://www.linkedin.com/in/codingaleo/" target="_blank">LinkedIn</a>
+                <a href="../resources/resume.pdf" target="_blank">Resume</a>
+                <a href="../about">About Me</a>
+            </div>
+
+            <p id="copyright">© 2024 Leo Chen. If you steal my content, I'll probably find out, maybe...</p>
+        </footer>
+    </div>
+</body>
+</html>
