@@ -158,6 +158,7 @@ nav {
     #nav-name {
         font-weight: 500;
         font-size: 24px;
+        line-height: 120%;
         text-decoration: none;
     }
 
@@ -249,16 +250,16 @@ footer {
                 transition: all 0.2s ease 0s;
             }
             #email {
-                background-image: url( 'resources/email.svg' );
+                background-image: url( '../resources/email.svg' );
             }
             #linkedin {
-                background-image: url( 'resources/linkedin.svg' );
+                background-image: url( '../resources/linkedin.svg' );
             }
             #resume {
-                background-image: url( 'resources/resume.svg' );
+                background-image: url( '../resources/resume.svg' );
             }
             #about {
-                background-image: url( 'resources/about.svg' );
+                background-image: url( '../resources/about.svg' );
             }
         }
         a:hover {
@@ -404,7 +405,7 @@ footer {
         font-family: var(--font-body);
         font-weight: 600;
         font-size: 50px;
-        line-height: 110%;
+        line-height: 120%;
         /* margin: 0px; */
     }
     h2 {
@@ -499,6 +500,7 @@ footer {
         height: 80px;
 
         #nav-links {
+            padding-left: 12px;
             a {
                 padding-inline: 0px;
             }

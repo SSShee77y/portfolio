@@ -52,16 +52,19 @@ document.addEventListener('mousemove', (e) => {
 
 // Blur effect needed for nav links
 const navLinks = document.querySelectorAll('#nav-links a');
+let glow = false;
 
 navLinks.forEach(link => {
     link.addEventListener('mouseenter', () => {
         canvasElement.classList.add('blur');
         reticle.classList.remove('hidden');
+        glow = true;
     });
 
     link.addEventListener('mouseleave', () => {
         canvasElement.classList.remove('blur');
         reticle.classList.add('hidden');
+        glow = false;
     });
 });
 
@@ -91,7 +94,8 @@ function draw() {
         evader.display();
     }
 
-    stroke(60);
+    // I know there's drop shadow, but I swear this looks better
+    stroke(60 + ( glow ? 40 : 0));
     ellipse(mouseX, mouseY, evaderDetectionRange, evaderDetectionRange);
     
     // Light at pointer
