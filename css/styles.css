@@ -109,7 +109,7 @@ main, canvas {
 }
 
 .blur {
-    filter: blur(8px)
+    filter: blur(12px)
 }
 
 /* Home Splash */
@@ -144,7 +144,7 @@ main, canvas {
     top: 0;
     left: 0;
     z-index: -1;
-    border: 2px solid #303030;
+    border: 2px solid #242424;
     border-radius: 50%;
     pointer-events: none; 
     transform: none;
@@ -236,9 +236,8 @@ footer {
         display: flex;
         flex-wrap: wrap;
         max-width: min(640px, 100%);
-        padding-inline: 30px;
         margin-block: 12px 4px;
-        gap: 30px;
+        gap: 12px;
         align-content: center;
         justify-content: center;
 
@@ -252,7 +251,7 @@ footer {
                 font-family: var(--font-poppins);
                 font-weight: 400;
                 margin-block: 2px;
-                padding-inline: 0px;
+                padding-inline: 8px;
                 padding-block: 36px 3px;
                 /* border-bottom: 1px solid; */
                 background-position: top; 
