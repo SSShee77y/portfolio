@@ -249,16 +249,16 @@ footer {
                 transition: all 0.2s ease 0s;
             }
             #email {
-                background-image: url( '/resources/email.svg' );
+                background-image: url( 'resources/email.svg' );
             }
             #linkedin {
-                background-image: url( '/resources/linkedin.svg' );
+                background-image: url( 'resources/linkedin.svg' );
             }
             #resume {
-                background-image: url( '/resources/resume.svg' );
+                background-image: url( 'resources/resume.svg' );
             }
             #about {
-                background-image: url( '/resources/about.svg' );
+                background-image: url( 'resources/about.svg' );
             }
         }
         a:hover {
