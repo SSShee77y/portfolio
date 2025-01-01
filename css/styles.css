@@ -498,9 +498,13 @@ footer {
     /* Navigation */
 
     nav {
-        max-width: calc(100vw - 50px);
+        max-width: calc(100vw - 40px);
         padding-inline: 20px;
         height: 80px;
+        
+        #nav-name {
+            font-size: 21px;
+        }
 
         #nav-links {
             padding-left: 12px;
@@ -514,7 +518,7 @@ footer {
     
     #home {
         #home-title {
-            top: 80px;
+            top: min(20vh, 120px);
             left: 20px;
         }
     }
