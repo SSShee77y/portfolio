@@ -369,7 +369,7 @@ footer {
     color: var(--color-dark);
     width: calc(100vw - 50px);
     max-width: 1000px;
-    padding-block: 40px 0px;
+    padding-block: 45px 0px;
     padding-inline: 25px;
     align-items: center;
     
