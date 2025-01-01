@@ -6,11 +6,18 @@ let evaderVelocityVariance = 0.4;
 let evaderSteeringFactor = 3;
 let evaderDetectionRange = 100;
 
-function setup() {
-    let homeDiv = document.getElementById("home");
-    let navDiv = document.getElementById("nav");
+// Set up requirements
+const homeDiv = document.getElementById("home");
+const navDiv = document.getElementById("nav");
+const gameCanvasHeight = homeDiv.offsetHeight + navDiv.offsetHeight;
+let canvasElement = null;
 
-    createCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
+function setup() {
+
+    let gameCanvas = createCanvas(windowWidth, gameCanvasHeight);
+    gameCanvas.id('p5-canvas');
+
+    canvasElement = document.getElementById('p5-canvas');
 
     evaderVelocityFactor = width/1000 + 3;
     evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
@@ -27,10 +34,39 @@ function setup() {
     textFont('JetBrains Mono', 20);
 }
 
-function windowResized() {
-    let homeDiv = document.getElementById("home");
-    let navDiv = document.getElementById("nav");
+// Mouse reticle
+const reticle = document.getElementById("reticle");
+document.addEventListener('mousemove', (e) => {
+    if (window.scrollY > gameCanvasHeight + evaderDetectionRange / 2) {
+        return;
+    }
 
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    reticle.style.left = `${mouseX - evaderDetectionRange/2}px`;
+    reticle.style.top = `${mouseY - evaderDetectionRange/2 + window.scrollY}px`;
+    reticle.style.width = `${evaderDetectionRange}px`;
+    reticle.style.height = `${evaderDetectionRange}px`;
+});
+
+// Blur effect needed for nav links
+const navLinks = document.querySelectorAll('#nav-links a');
+
+navLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        canvasElement.classList.add('blur');
+        reticle.classList.remove('hidden');
+    });
+
+    link.addEventListener('mouseleave', () => {
+        canvasElement.classList.remove('blur');
+        reticle.classList.add('hidden');
+    });
+});
+
+// On window resize
+function windowResized() {
     resizeCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
     
     evaderVelocityFactor = width/1000 + 3;
@@ -38,6 +74,10 @@ function windowResized() {
 }
 
 function draw() {
+    if (window.scrollY > gameCanvasHeight + evaderDetectionRange / 2) {
+        return;
+    }
+    
     background("#141213");
     frameRate(60);
 
@@ -51,18 +91,16 @@ function draw() {
         evader.display();
     }
 
-    // Darkness
-    strokeWeight(0);
-    // fill(13, 10, 8, 90);
-    // rect(0, 0, width, height);
+    stroke(60);
+    ellipse(mouseX, mouseY, evaderDetectionRange, evaderDetectionRange);
     
     // Light at pointer
-    let radius = evaderDetectionRange + 100;
-    for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
-        fill(150, 150, 150, 3);
-        ellipse(mouseX, mouseY, r, r);
-    }
-
+    // strokeWeight(0);
+    // let radius = evaderDetectionRange + 100;
+    // for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
+    //     fill(150, 150, 150, 3);
+    //     ellipse(mouseX, mouseY, r, r);
+    // }
 }
 
 function mouseSteering() {
@@ -76,7 +114,9 @@ function mouseSteering() {
         
         angleMode(DEGREES);
 
-        if (result.distance > evaderDetectionRange) {
+        let detectionRange = evaderDetectionRange + 10;
+
+        if (result.distance > detectionRange) {
             // Random steering
             evader.vel.rotate(radians(random(-evaderSteeringFactor, evaderSteeringFactor)));
             evader.panic = false;
@@ -87,7 +127,7 @@ function mouseSteering() {
     
             // Steer away from mouse
             evader.panic = true;
-            evader.panicFac = (evaderDetectionRange - result.distance)/evaderDetectionRange;
+            evader.panicFac = (detectionRange - result.distance)/detectionRange;
             evader.vel.rotate(radians(evader.panicFac * steering * 6));
         }
     }
