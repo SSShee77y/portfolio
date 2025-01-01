@@ -19,7 +19,7 @@ function setup() {
 
     canvasElement = document.getElementById('p5-canvas');
 
-    evaderVelocityFactor = width/1000 + 3;
+    evaderVelocityFactor = Math.min(2.5, width/1200 + 3);
     evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
         
     // Create some Evaders with random positions and velocity
@@ -38,7 +38,7 @@ function setup() {
 function windowResized() {
     resizeCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
     
-    evaderVelocityFactor = width/1000 + 3;
+    evaderVelocityFactor = Math.min(10, width/1200 + 3);
     evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
 }
 
@@ -102,14 +102,14 @@ function mouseSteering() {
     for (let i = evaders.length - 1; i >= 0; i--) {
         // Calculate direction of nearest mousePos
         let evader = evaders[i];
-        let result = evader.getMousePos(mousePos);
-        let dirVec = p5.Vector.sub(evader.pos, result.pos).normalize();
+        let distance = p5.Vector.dist(evader.pos, mousePos);
+        let dirVec = p5.Vector.sub(evader.pos, mousePos).normalize();
         
         angleMode(DEGREES);
 
-        let detectionRange = evaderDetectionRange + 10;
+        let detectionRange = evaderDetectionRange - 30;
 
-        if (result.distance > detectionRange) {
+        if (distance > detectionRange) {
             // Random steering
             evader.vel.rotate(radians(random(-evaderSteeringFactor, evaderSteeringFactor)));
             evader.panic = false;
@@ -120,7 +120,7 @@ function mouseSteering() {
     
             // Steer away from mouse
             evader.panic = true;
-            evader.panicFac = (detectionRange - result.distance)/detectionRange;
+            evader.panicFac = (detectionRange - distance)/detectionRange;
             evader.vel.rotate(radians(evader.panicFac * steering * 6));
         }
     }
@@ -132,39 +132,4 @@ function degreeDifference(vecA, vecB) {
     angleMode(DEGREES);
   
     return vecA.angleBetween(vecB);
-}
-
-// Gets wrapped positions
-function getWrappedPositions(pos, borderDetection) {
-    let positions = [];
-
-    // Get wrapped on x
-    if (pos.x > windowWidth - borderDetection) {
-        positions.push(createVector(pos.x - windowWidth, pos.y));
-        
-        // Get wrapped of wrapped-x on y
-        if (positions[0].y > windowHeight - borderDetection) {
-            positions.push(createVector(positions[0].x, positions[0].y - windowHeight));
-        } else if (positions[0].y < borderDetection) {
-            positions.push(createVector(positions[0].x, positions[0].y + windowHeight));
-        }
-    } else if (pos.x < borderDetection) {
-        positions.push(createVector(pos.x + windowWidth, pos.y));
-        
-        // Get wrapped of wrapped-x on y
-        if (positions[0].y > windowHeight - borderDetection) {
-            positions.push(createVector(positions[0].x, positions[0].y - windowHeight));
-        } else if (positions[0].y < borderDetection) {
-            positions.push(createVector(positions[0].x, positions[0].y + windowHeight));
-        }
-    }
-
-    // Get wrapped on y
-    if (pos.y > windowHeight - borderDetection) {
-        positions.push(createVector(pos.x, pos.y - windowHeight));
-    } else if (pos.y < borderDetection) {
-        positions.push(createVector(pos.x, pos.y + windowHeight));
-    }
-
-    return positions;
 }

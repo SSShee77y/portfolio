@@ -18,15 +18,15 @@ class Entity {
     }
 
     update() {
-        this.pos.add(p5.Vector.mult(this.vel, (this.panic ? 1 + this.panicFac : 1)));
+        this.pos.add(p5.Vector.mult(this.vel, (this.panic ? 1 + this.panicFac * 3 : 1)));
         this.wrapAround();
     }
 
     wrapAround() {
-        if (this.pos.x > width + this.size) this.pos.x = - this.size;
-        if (this.pos.x < 0 - this.size) this.pos.x = width + this.size;
-        if (this.pos.y > height + this.size) this.pos.y = - this.size;
-        if (this.pos.y < 0 - this.size) this.pos.y = height + this.size;
+        if (this.pos.x > width + this.size + evaderDetectionRange / 2) this.pos.x = - this.size - evaderDetectionRange / 2;
+        if (this.pos.x < 0 - this.size - evaderDetectionRange / 2) this.pos.x = width + this.size + evaderDetectionRange / 2;
+        if (this.pos.y > height + this.size + evaderDetectionRange / 2) this.pos.y = - this.size - evaderDetectionRange / 2;
+        if (this.pos.y < 0 - this.size - evaderDetectionRange / 2) this.pos.y = height + this.size + evaderDetectionRange / 2;
     }
 
     // Draw an isosceles triangle for the entity
@@ -47,30 +47,6 @@ class Entity {
         triangle(pos1.x, pos1.y, pos2.x, pos2.y, pos3.x, pos3.y)
         // line(pos.x, pos.y, v1.x, v1.y);
     }
-
-    getMousePos(pos) {
-        let minDistance = Infinity;
-        let closestPosition = null;
-
-        if (pos == 0) {
-            return null;
-        }
-    
-        // Get every possible position + wraparounds
-        const positions = getWrappedPositions(pos, evaderDetectionRange/2);
-        positions.push(createVector(pos.x, pos.y));
-        
-        // Check the shortest distance to any wrapped position
-        for (const pos of positions) {
-            const distance = dist(this.pos.x, this.pos.y, pos.x, pos.y);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestPosition = pos;
-            }
-        }
-    
-        return {pos: closestPosition, distance: minDistance};
-    }
 }
 
 class Chaser extends Entity {
@@ -81,6 +57,6 @@ class Chaser extends Entity {
 
 class Evader extends Entity {
     constructor(pos, vel) {
-        super(pos, vel, color(160));
+        super(pos, vel, color(60));
     }
 }
