@@ -99,7 +99,7 @@ main, canvas {
     left: 0;
     z-index: -2;
     background-color: var(--color-dark);
-    transition: all 0.3s ease 0s;
+    transition: all 0.2s ease 0s;
 }
 
 .blur {
@@ -133,14 +133,17 @@ main, canvas {
 
 #reticle {
     position: absolute;
+    top: 0;
+    left: 0;
     z-index: -1;
-    border: 2px solid #404040;
+    border: 2px solid #303030;
     border-radius: 50%;
     pointer-events: none; 
-    transition: border-width 0.1s ease 0s;
+    transform: none;
+    transition: all 0.15s ease-out 0s;
 }
-#reticle.hidden {
-    border-width: 0px;
+#reticle.glow {
+    filter: drop-shadow(0 0 12px #303030);
 }
 
 /* Navigation */

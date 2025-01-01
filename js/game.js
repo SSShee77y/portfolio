@@ -34,8 +34,18 @@ function setup() {
     textFont('JetBrains Mono', 20);
 }
 
+// On window resize
+function windowResized() {
+    resizeCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
+    
+    evaderVelocityFactor = width/1000 + 3;
+    evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
+}
+
 // Mouse reticle
 const reticle = document.getElementById("reticle");
+let reticleHover = false;
+
 document.addEventListener('mousemove', (e) => {
     if (window.scrollY > gameCanvasHeight + evaderDetectionRange / 2) {
         return;
@@ -44,37 +54,28 @@ document.addEventListener('mousemove', (e) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    reticle.style.left = `${mouseX - evaderDetectionRange/2}px`;
-    reticle.style.top = `${mouseY - evaderDetectionRange/2 + window.scrollY}px`;
+    reticle.style.transform = `translate(${mouseX - evaderDetectionRange/2}px, ${mouseY - evaderDetectionRange/2 + window.scrollY}px)` + (reticleHover ? ` scale(.93)` : ``);
+    
     reticle.style.width = `${evaderDetectionRange}px`;
     reticle.style.height = `${evaderDetectionRange}px`;
 });
 
 // Blur effect needed for nav links
 const navLinks = document.querySelectorAll('#nav-links a');
-let glow = false;
 
 navLinks.forEach(link => {
     link.addEventListener('mouseenter', () => {
         canvasElement.classList.add('blur');
-        reticle.classList.remove('hidden');
-        glow = true;
+        reticle.classList.add('glow');
+        reticleHover = true;
     });
 
     link.addEventListener('mouseleave', () => {
         canvasElement.classList.remove('blur');
-        reticle.classList.add('hidden');
-        glow = false;
+        reticle.classList.remove('glow');
+        reticleHover = false;
     });
 });
-
-// On window resize
-function windowResized() {
-    resizeCanvas(windowWidth, homeDiv.offsetHeight + navDiv.offsetHeight);
-    
-    evaderVelocityFactor = width/1000 + 3;
-    evaderDetectionRange = Math.min(500, width * height / 11000 + 100);
-}
 
 function draw() {
     if (window.scrollY > gameCanvasHeight + evaderDetectionRange / 2) {
@@ -93,18 +94,6 @@ function draw() {
         evader.update();
         evader.display();
     }
-
-    // I know there's drop shadow, but I swear this looks better
-    stroke(60 + ( glow ? 40 : 0));
-    ellipse(mouseX, mouseY, evaderDetectionRange, evaderDetectionRange);
-    
-    // Light at pointer
-    // strokeWeight(0);
-    // let radius = evaderDetectionRange + 100;
-    // for (let r = radius; r > 0; r -= evaderDetectionRange / radius * 20) {
-    //     fill(150, 150, 150, 3);
-    //     ellipse(mouseX, mouseY, r, r);
-    // }
 }
 
 function mouseSteering() {
